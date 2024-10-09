@@ -34,7 +34,10 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
             title: Text(suraItemObj.suraName),
           ),
           body: virsesList.isEmpty
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ))
               : ListView.builder(
                   itemBuilder: (context, index) => SuraDetailsWidget(
                       verses: virsesList[index], index: index),
