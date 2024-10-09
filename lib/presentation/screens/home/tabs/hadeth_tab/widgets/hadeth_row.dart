@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/core/routes_manager.dart';
 import 'package:islamic_app/presentation/screens/home/tabs/hadeth_tab/hadeth_tab.dart';
 
 class HadethRow extends StatelessWidget {
@@ -10,15 +11,11 @@ class HadethRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.pushNamed(
-        //   context,
-        //   RouteManager.quranDetailsRoute,
-        //   arguments: SuraItemObj(
-        //     suraName: suraName,
-        //     suraVurse: suraVurse,
-        //     Index: listIndex,
-        //   ),
-        // );
+        Navigator.pushNamed(
+          context,
+          RouteManager.hadethDetailsRoute,
+          arguments: HadethItem(title: hadethItem.title, body: hadethItem.body),
+        );
       },
       child: Row(
         textDirection: TextDirection.rtl,
