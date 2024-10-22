@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:islamic_app/core/string_manager.dart';
+import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QuranHeaderWidget extends StatelessWidget {
   const QuranHeaderWidget({super.key});
@@ -8,34 +8,31 @@ class QuranHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: 2,
-          ),
-        ),
-      ),
+          border: Border.symmetric(
+              horizontal:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 2))),
       child: IntrinsicHeight(
         child: Row(
           textDirection: TextDirection.rtl,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Text(
-                StringManager.chapterName,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
+                flex: 3,
+                child: Text(
+                    textAlign: TextAlign.center,
+                    AppLocalizations.of(context)!.chapterName,
+                    style: Theme.of(context).textTheme.headlineMedium)),
             Container(
               color: Theme.of(context).dividerColor,
               width: 2,
             ),
             Expanded(
+                flex: 3,
                 child: Text(
-              StringManager.verseNumber,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ))
+                    textAlign: TextAlign.center,
+                    AppLocalizations.of(context)!.versesNumber,
+                    style: Theme.of(context).textTheme.headlineMedium)),
           ],
         ),
       ),
