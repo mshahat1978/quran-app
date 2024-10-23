@@ -1,10 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:islamic_app/config/theme/my_theme.dart';
-import 'package:islamic_app/core/routes_manager.dart';
-import 'package:islamic_app/presentation/screens/home/home_screen.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/hadeth_tab/hadeth_details.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/quran_tab/quran_details_screen.dart';
-import 'package:islamic_app/presentation/screens/splash/splash_screen.dart';
+import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import "package:islamic_app/config/theme/my_theme.dart";
+import "package:islamic_app/core/routes_manager.dart";
+import "package:islamic_app/presentation/screens/hadith_details_screen/hadith_details_screen.dart";
+import "package:islamic_app/presentation/screens/home/home_screen.dart";
+import "package:islamic_app/presentation/screens/quran_details_screen/quran_details_screen.dart";
+import "package:islamic_app/presentation/screens/splash/splash_screen.dart";
+import "package:islamic_app/providers/language_provider.dart";
+import "package:islamic_app/providers/quran_details_provider.dart";
+import "package:islamic_app/providers/theme_provider.dart";
+import "package:provider/provider.dart";
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,16 +17,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    var langProvider = Provider.of<LanguageProvider>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: MyTheme.lightTheme,
+      darkTheme: MyTheme.darkTheme,
+      themeMode: themeProvider.currentTheme,
       routes: {
-        RouteManager.homeRoute: (context) => HomeScreen(),
-        RouteManager.splashRoute: (context) => const SplashScreen(),
-        RouteManager.quranDetailsRoute: (context) => QuranDetailsScreen(),
-        RouteManager.hadethDetailsRoute: (context) => HadethDetailsScreen(),
+        RoutesManager.homeRoute: (_) => HomeScreen(),
+        RoutesManager.splashRoute: (_) => const SplashScreen(),
+        RoutesManager.quranDetailsRoute: (_) => ChangeNotifierProvider(
+            create: (context) => QuranDetailsProvider(),
+            child: QuranDetailsScreen()),
+        RoutesManager.hadithDetailsRoute: (_) => const HadithDetailsScreen(),
       },
-      initialRoute: RouteManager.homeRoute,
+      initialRoute: RoutesManager.splashRoute,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: const [
+        Locale("ar"),
+        Locale("en"),
+      ],
+      locale: Locale(langProvider.currentLanguage),
     );
   }
 }
+
+// 1

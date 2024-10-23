@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:islamic_app/core/assets_manager.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/quran_tab/widgets/quran_header_widget.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/quran_tab/widgets/sura_widget.dart';
+import "package:flutter/material.dart";
+import "package:islamic_app/core/assets_manager.dart";
+import "package:islamic_app/presentation/screens/home/tabs/quran_tab/widgets/quran_header_widget.dart";
+import "package:islamic_app/presentation/screens/home/tabs/quran_tab/widgets/sura_name_widget.dart";
 
 class QuranTab extends StatelessWidget {
   QuranTab({super.key});
@@ -244,26 +244,36 @@ class QuranTab extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Image.asset(
-            AssetsManager.quranHeaderImage,
-            height: 130,
-          ),
-          QuranHeaderWidget(),
+          Expanded(flex: 1, child: Image.asset(AssetsManager.quranHeaderImage)),
+          const QuranHeaderWidget(),
           Expanded(
+            flex: 2,
             child: ListView.separated(
-                itemBuilder: (context, index) => SuraWidget(
-                      suraName: suraNames[index],
-                      suraVurse: versesNumber[index].toString(),
-                      listIndex: index,
+                itemBuilder: (context, index) => SuraNameWidget(
+                      suraItem: SuraItem(
+                          suraName: suraNames[index],
+                          versesNumber: versesNumber[index].toString(),
+                          index: index),
                     ),
                 separatorBuilder: (context, index) => Container(
-                    color: Theme.of(context).dividerColor,
                     width: double.infinity,
-                    height: 1),
+                    height: 3,
+                    color: Theme.of(context).dividerColor),
                 itemCount: suraNames.length),
           )
         ],
       ),
     );
   }
+}
+
+class SuraItem {
+  String suraName;
+  String versesNumber;
+  int index;
+
+  SuraItem(
+      {required this.suraName,
+      required this.versesNumber,
+      required this.index});
 }

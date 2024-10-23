@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:islamic_app/core/assets_manager.dart';
-import 'package:islamic_app/core/color_manager.dart';
-import 'package:islamic_app/core/string_manager.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/hadeth_tab/hadeth_tab.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/quran_tab/quran_tab.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/radio_tab/radio_tab.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/sebha_tab/sebha_tab.dart';
-import 'package:islamic_app/presentation/screens/home/tabs/settings_tab/setting_tab.dart';
+import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import "package:islamic_app/core/assets_manager.dart";
+import "package:islamic_app/presentation/screens/home/tabs/hadith_tab/hadith_tab.dart";
+import "package:islamic_app/presentation/screens/home/tabs/quran_tab/quran_tab.dart";
+import "package:islamic_app/presentation/screens/home/tabs/radio_tab/radio_tab.dart";
+import "package:islamic_app/presentation/screens/home/tabs/settings_tab/settings_tab.dart";
+import "package:islamic_app/presentation/screens/home/tabs/tasbeh_tab/tasbeh_tab.dart";
+import "package:islamic_app/providers/theme_provider.dart";
+import "package:provider/provider.dart";
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -16,56 +17,66 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int tabIndex = 0;
-  List<Widget> tabList = [
+  List<Widget> tabs = [
     QuranTab(),
-    HadethTab(),
-    SebhaTab(),
+    HadithTab(),
+    const TasbehTab(),
     const RadioTab(),
     const SettingsTab(),
   ];
 
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    var myProvider = Provider.of<ThemeProvider>(context);
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           image: DecorationImage(
-        image: AssetImage(
-          AssetsManager.mainBgLight,
-        ),
-        fit: BoxFit.fill,
-      )),
+              fit: BoxFit.fill,
+              image: AssetImage(
+                myProvider.isLightTheme()
+                    ? AssetsManager.mainBgLight
+                    : AssetsManager.mainBgDark,
+              ))),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(StringManager.appTitle),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-                backgroundColor: ColorManger.goldColor,
-                icon: ImageIcon(AssetImage(AssetsManager.quranIcon)),
-                label: StringManager.quranLabel),
-            BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage(AssetsManager.hadethIcon)),
-                label: StringManager.hadethLabel),
-            BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage(AssetsManager.sebhaIcon)),
-                label: StringManager.sebhaLabel),
-            BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage(AssetsManager.radioIcon)),
-                label: StringManager.radioLabel),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: StringManager.settingLabel),
-          ],
-          onTap: (index) {
-            tabIndex = index;
-            setState(() {});
-          },
-          currentIndex: tabIndex,
-        ),
-        body: tabList[tabIndex],
-      ),
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.appTitle),
+          ),
+          bottomNavigationBar: Theme(
+            data: Theme.of(context)
+                .copyWith(canvasColor: Theme.of(context).primaryColor),
+            child: BottomNavigationBar(
+                currentIndex: selectedIndex,
+                onTap: (index) {
+                  // 1
+                  selectedIndex = index; // 1
+                  setState(() {});
+                },
+                type: BottomNavigationBarType.shifting,
+                items: [
+                  BottomNavigationBarItem(
+                      icon:
+                          const ImageIcon(AssetImage(AssetsManager.quranIcon)),
+                      label: AppLocalizations.of(context)!.quranTab),
+                  BottomNavigationBarItem(
+                      icon:
+                          const ImageIcon(AssetImage(AssetsManager.hadithIcon)),
+                      label: AppLocalizations.of(context)!.hadithHeader),
+                  BottomNavigationBarItem(
+                      icon:
+                          const ImageIcon(AssetImage(AssetsManager.tasbehIcon)),
+                      label: AppLocalizations.of(context)!.sebhaTab),
+                  BottomNavigationBarItem(
+                      icon:
+                          const ImageIcon(AssetImage(AssetsManager.radioIcon)),
+                      label: AppLocalizations.of(context)!.radioTab),
+                  BottomNavigationBarItem(
+                      icon: const Icon(Icons.settings),
+                      label: AppLocalizations.of(context)!.settingsTab)
+                ]),
+          ),
+          body: tabs[selectedIndex]),
     );
   }
 }
