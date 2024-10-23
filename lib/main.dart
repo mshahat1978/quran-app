@@ -7,10 +7,10 @@ import "package:provider/provider.dart";
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => ThemeProvider()..getTheme(),
     ),
     ChangeNotifierProvider(
-      create: (context) => LanguageProvider(),
+      create: (context) => LanguageProvider()..getLang(),
     )
   ], child: const MyApp()));
 }

@@ -15,4 +15,5 @@ class AssetsManager {
   static const String headOfSebhaDark = "${base}head_of_sebha_dark.png";
   static const String bodyOfSebhaLight = "${base}body_of_sebha_light.png";
   static const String bodyOfSebhaDark = "${base}body_of_sebha_dark.png";
+  static const String splashDarkBG = "${base}splashDarkBG.png";
 }
